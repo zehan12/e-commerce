@@ -8,7 +8,11 @@ app.get("/", (req, res) => {
     res.send("hello from backend")
 })
 
-app.get("/products",(req, res)=>{
+app.get("/api/v1/", (req, res) => {
+
+})
+
+app.get("/products", (req, res) => {
     res.status(200).json(products)
 })
 
