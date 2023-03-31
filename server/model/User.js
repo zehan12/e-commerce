@@ -41,13 +41,12 @@ const userSchema = new Schema({
             message: 'Username Must preceed with letters followed by _ or numbers eg: john23 | john_23'
         }
     },
-    phone: {
-        type: String
-    },
     isEmailValidated: {
         type: Boolean,
         default: false
     },
+
+    contactNumber: { type: String },
     info: {
         bio: {
             type: String,
@@ -63,7 +62,15 @@ const userSchema = new Schema({
             enum: ['male', 'female', 'unspecified']
         }
     },
+    
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user",
+    },
+
     isAdmin: { type: Boolean, required: true, default: false },
+
     profilePicture: {
         type: Object, // switched to cloudinary so I have to set as Object
         default: {}
