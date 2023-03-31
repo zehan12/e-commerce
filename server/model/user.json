@@ -1,0 +1,26 @@
+{
+    "status": "success",
+    "message": "user created",
+    "user": {
+        "firstName": "zehan",
+        "lastName": "khan",
+        "email": "zeha9211@gmail.com",
+        "password": "123456789",
+        "username": "zehan12",
+        "isEmailValidated": false,
+        "info": {
+            "bio": "",
+            "gender": "unspecified"
+        },
+        "role": "user",
+        "isAdmin": false,
+        "status": 1,
+        "whishlist": [],
+        "following": [],
+        "followers": [],
+        "_id": "642749928d5531ee77f49b93",
+        "history": [],
+        "dateJoined": "2023-03-31T20:58:58.371Z",
+        "__v": 0
+    }
+}
