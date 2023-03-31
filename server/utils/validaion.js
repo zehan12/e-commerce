@@ -14,7 +14,7 @@ const validatePassword = (password) => {
 
 //Mobile Number Check
 const isValidMobile = (mobile) => {
-    if (mobile.length <= 9 || mobile === '') {
+    if (mobile.length >= 8 || mobile === '') {
         return false;
     }
     return true;
@@ -27,3 +27,10 @@ const empty = (input) => {
     }
     return false;
 };
+
+module.exports = {
+    isValidEmail,
+    validatePassword,
+    isValidMobile,
+    empty
+}
