@@ -1,8 +1,10 @@
 const express = require("express");
-const products = require("./mock.json")
+const products = require("../mock.json")
 
 const app = express()
 const port = 4200;
+
+app.use("/api/v1/user",require("./routes/user"));
 
 app.get("/", (req, res) => {
     res.send("hello from backend")
