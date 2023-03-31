@@ -41,6 +41,9 @@ const userSchema = new Schema({
             message: 'Username Must preceed with letters followed by _ or numbers eg: john23 | john_23'
         }
     },
+    phone: {
+        type: String
+    },
     isEmailValidated: {
         type: Boolean,
         default: false
@@ -69,31 +72,30 @@ const userSchema = new Schema({
         type: Number,
         default: 1 // 1 OK | 2 Warning | 3 Blocked | 4 Ban
     },
-    bookmarks: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Article'
-    }],
+
     whishlist: [{
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "Products"
     }],
-    favorites: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Article",
-        },
-    ],
+
     following: [
         {
             type: Schema.Types.ObjectId,
             ref: "User",
         },
     ],
+
     followers: [
         {
             type: Schema.Types.ObjectId,
             ref: "User",
         },
     ],
+    history: [{
+        date: Date,
+        paid: { type: Number, default: 0 },
+        // items: { type: Schema.Types.ObjectId, ref: '' },
+    }],
     dateJoined: {
         type: Date,
         default: Date.now,
