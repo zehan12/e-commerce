@@ -1,10 +1,25 @@
 require("dotenv").config();
-console.log(process.env)
-const express = require("express");
-const products = require("../mock.json")
 
-const app = express()
-const port = 4200;
+const express   = require("express");
+const products  = require("../mock.json")
+const mongoose  = require("mongoose");
+
+const app       = express()
+const port      = process.env.PORT || 4200;
+const connUri   = process.env.MONGO_URI;
+
+//=== - SET UP DATABASE
+//Configure mongoose's promise to global promise
+mongoose.set('strictQuery', false)
+mongoose.promise = global.Promise;
+mongoose.connect(connUri);
+
+const connection = mongoose.connection;
+connection.once('open', () => console.log('MongoDB --  database connection established successfully!'));
+connection.on('error', (err) => {
+    console.log("MongoDB connection error. Please make sure MongoDB is running. " + err);
+    process.exit();
+});
 
 app.use("/api/v1/user",require("./routes/user"));
 
