@@ -1,7 +1,7 @@
 
 const Content = () => {
     return (
-        <div className="relative text-white h-screen flex justify-center ml-40" style={{ zIndex: 5, flexFlow: "column nowrap" }}>
+        <div className="relative text-white h-screen flex justify-center items-center md:items-start md:ml-40 " style={{ zIndex: 5, flexFlow: "column nowrap" }}>
             <div className="flex">
                 <div className="relative text-white h-screen flex flex-col justify-center">
                     <h1 className="font-extrabold leading-1" style={{ fontSize: "clamp(42px, 5vw, 72px)" }} >E-Commerce</h1>

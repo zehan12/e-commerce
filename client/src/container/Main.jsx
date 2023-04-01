@@ -1,4 +1,4 @@
-import Landing from "../page/Landing";
+import Landing from "../page/screen/Landing";
 
 const Main = () => {
   return (
