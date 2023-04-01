@@ -1,6 +1,5 @@
 require("dotenv").config();
 
-
 // external lib
 const express = require("express");
 const products = require("../mock.json")
@@ -40,14 +39,18 @@ app.use("/api/v1.0/user", require("./routes/user"));
 app.use("/api/v1.0/register", require("./routes/register"));
 app.use("/api/v1.0/authenticate", require("./routes/authenticate"));
 
-app.get("/", (_, res) => {
+app.get("/api/dir", (_, res) => {
     const childProcess = fork("./server/utils/dir")
     childProcess.send({ "dir": process.cwd() });
     childProcess.on("message", message => res.send(message));
 })
 
-app.get("/products", (req, res) => {
+app.get("/products", (_, res) => {
     res.status(200).json(products)
+})
+
+app.get("/", (_, res) => {
+    res.send("Hello from Backend")
 })
 
 if (cluster.isMaster) {
