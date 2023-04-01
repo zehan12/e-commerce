@@ -3,6 +3,7 @@ require("dotenv").config();
 const express   = require("express");
 const products  = require("../mock.json")
 const mongoose  = require("mongoose");
+const chalk=require("chalk");
 
 const app       = express()
 const port      = process.env.PORT || 4200;
@@ -38,5 +39,5 @@ app.get("/products", (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log(`Server listing on port ${port}`)
+    console.log(chalk.hex('#DEADED').bold(`Server listing on port ${port}`))
 })
