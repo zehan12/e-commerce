@@ -1,6 +1,7 @@
 const express = require("express");
+const { handleLogin } = require("../controller/authenticate");
 const authRouter = express.Router();
 
-authRouter.get("/authenticate",(req,res)=>{});
+authRouter.post("/login", handleLogin);
 
 module.exports = authRouter;

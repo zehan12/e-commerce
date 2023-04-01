@@ -26,7 +26,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/v1.0/user",require("./routes/user"));
-app.use("/api/v1.0/register", require("./routes/register"))
+app.use("/api/v1.0/register", require("./routes/register"));
+app.use("/api/v1.0/authenticate",require("./routes/authenticate"));
 
 app.get("/", (req, res) => {
     res.send("hello from backend")
