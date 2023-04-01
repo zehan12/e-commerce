@@ -15,6 +15,8 @@ const Landing = () => {
             <Content />
             <VideoBackground />
             <Parallax />
+            <Parallax />
+
             <div className="h-[30vh] bg-[rgb(255,163,255)]" style={{ background: "linear-gradient(0deg, rgba(255,163,255,1) 0%, rgba(255,211,78,1) 100%)" }} >
                 <a
                     className="flex justify-center items-center p-20"

@@ -1,9 +1,10 @@
 require("dotenv").config();
 
-const express   = require("express");
-const products  = require("../mock.json")
-const mongoose  = require("mongoose");
-const chalk     = require("chalk");
+const express = require("express");
+const products = require("../mock.json")
+const mongoose = require("mongoose");
+const chalk = require("chalk");
+const directoryTree = require("directory-tree");
 
 const app = express()
 const port = process.env.PORT || 4200;
@@ -30,8 +31,23 @@ app.use("/api/v1.0/user", require("./routes/user"));
 app.use("/api/v1.0/register", require("./routes/register"));
 app.use("/api/v1.0/authenticate", require("./routes/authenticate"));
 
-app.get("/", (req, res) => {
-    res.send("hello from backend")
+app.get("/api/dir", (_, res) => {
+    const excludeDirs = ["node_modules", ".git"];
+    function filterTree(tree) {
+        if (tree.children) {
+            tree.children = tree.children
+                .filter(child => !excludeDirs.includes(child.name))
+                .map(child => filterTree(child));
+            tree.isFolder = true; // add isFolder: true property to folder nodes
+        } else {
+            tree.isFolder = false; // add isFolder: false property to file nodes
+        }
+        return tree;
+    }
+    const directoryPath = process.cwd();
+    const originalTree = directoryTree(directoryPath);
+    const filteredTree = filterTree(originalTree);
+    res.json(filteredTree)
 })
 
 app.get("/products", (req, res) => {
