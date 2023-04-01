@@ -39,5 +39,5 @@ app.get("/products", (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log(chalk.hex('#DEADED').bold(`Server listing on port ${port}`))
+    console.log(chalk.red.bold(`Server listing on port ${port}`))
 })
