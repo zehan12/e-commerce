@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const bcrypt = require("bcrypt");
 
 const userSchema = new Schema({
     firstName: { type: String, require: true, maxlength: 40 },
     lastName: { type: String, require: true, maxlength: 50 },
     email: {
         type: String,
-        minlength: 12,
+        minlength: 7,
         unique: true,
         required: [true, 'Email is required.'],
         lowercase: true,
@@ -62,7 +63,7 @@ const userSchema = new Schema({
             enum: ['male', 'female', 'unspecified']
         }
     },
-    
+
     role: {
         type: String,
         enum: ["user", "admin"],
@@ -110,7 +111,23 @@ const userSchema = new Schema({
     }
 });
 
+// storing hashed password in db
+userSchema.pre('save', async function (next) {
+    if (this.password && this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 10)
+    }
+    next();
+})
 
+// login flow check pasword 
+userSchema.methods.verifyPassword = async function (password) {
+    try {
+        var result = await bcrypt.compare(password, this.password);
+        return result;
+    } catch (error) {
+        return error;
+    }
+};
 
 
 
