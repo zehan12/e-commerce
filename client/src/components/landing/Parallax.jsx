@@ -11,4 +11,4 @@ const Parallax = () => {
     )
 }
 
-return Parallax;
+export default Parallax;
