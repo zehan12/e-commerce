@@ -17,14 +17,14 @@ const userSchema = new Schema({
                 const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
                 return regex.test(email);
             },
-            message: '{VALUE} is invalid.'
+            message: (props) => `${props.value} is not in correct format !!`,
         }
     },
     password: {
         type: String,
-        minlength: 8,
-        required: true,
-        maxlength: 100
+        required: [true, "password required !!"],
+        minLength: [9, "isnt is too short !!"],
+        maxlength: 20
     },
     username: {
         type: String,
@@ -108,6 +108,10 @@ const userSchema = new Schema({
         default: Date.now,
         required: true
     }
-})
+});
+
+
+
+
 
 module.exports = mongoose.model("User", userSchema);
