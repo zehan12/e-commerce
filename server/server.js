@@ -1,14 +1,23 @@
 require("dotenv").config();
 
+
+// external lib
 const express = require("express");
 const products = require("../mock.json")
 const mongoose = require("mongoose");
 const chalk = require("chalk");
-const directoryTree = require("directory-tree");
+
+// internal lib
+const cluster = require("cluster");
+const os = require("os");
+const { fork } = require("child_process");
 
 const app = express()
 const port = process.env.PORT || 4200;
 const connUri = process.env.MONGO_URI;
+
+// get no. of port present in our cup
+const noOfCpus = os.cpus().length;
 
 //=== - SET UP DATABASE
 //Configure mongoose's promise to global promise
@@ -31,29 +40,28 @@ app.use("/api/v1.0/user", require("./routes/user"));
 app.use("/api/v1.0/register", require("./routes/register"));
 app.use("/api/v1.0/authenticate", require("./routes/authenticate"));
 
-app.get("/api/dir", (_, res) => {
-    const excludeDirs = ["node_modules", ".git"];
-    function filterTree(tree) {
-        if (tree.children) {
-            tree.children = tree.children
-                .filter(child => !excludeDirs.includes(child.name))
-                .map(child => filterTree(child));
-            tree.isFolder = true; // add isFolder: true property to folder nodes
-        } else {
-            tree.isFolder = false; // add isFolder: false property to file nodes
-        }
-        return tree;
-    }
-    const directoryPath = process.cwd();
-    const originalTree = directoryTree(directoryPath);
-    const filteredTree = filterTree(originalTree);
-    res.json(filteredTree)
+app.get("/", (_, res) => {
+    const childProcess = fork("./server/utils/dir")
+    childProcess.send({ "dir": process.cwd() });
+    childProcess.on("message", message => res.send(message));
 })
 
 app.get("/products", (req, res) => {
     res.status(200).json(products)
 })
 
-app.listen(port, () => {
-    console.log(chalk.red.bold("Server listing on port") + ": " + chalk.blue.underline.bold(port))
-})
+if (cluster.isMaster) {
+    console.log(process.pid + " In Master")
+    for (let i = 0; i < noOfCpus; i++) {
+        cluster.fork();
+    }
+    cluster.on('exit', () => {
+        console.log('one worker destroy');
+        cluster.fork()
+    })
+} else {
+    app.listen(port, () => {
+        console.log(chalk.red.bold(`Server ${process.pid} listing on port`) + ": " + chalk.blue.underline.bold(port) + ` worker: ${cluster.worker.id}`)
+    })
+}
+
