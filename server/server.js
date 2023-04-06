@@ -53,18 +53,22 @@ app.get("/", (_, res) => {
     res.send("Hello from Backend")
 })
 
-if (cluster.isMaster) {
-    console.log(process.pid + " In Master")
-    for (let i = 0; i < noOfCpus; i++) {
-        cluster.fork();
-    }
-    cluster.on('exit', () => {
-        console.log('one worker destroy');
-        cluster.fork()
-    })
-} else {
-    app.listen(port, () => {
-        console.log(chalk.red.bold(`Server ${process.pid} listing on port`) + ": " + chalk.blue.underline.bold(port) + ` worker: ${cluster.worker.id}`)
-    })
-}
+// handle unknown routes
+app.get("*", (_, res) => res.status(404).send("Page not found"));
 
+// if (cluster.isMaster) {
+//     console.log(process.pid + " In Master")
+//     for (let i = 0; i < noOfCpus; i++) {
+//         cluster.fork();
+//     }
+//     cluster.on('exit', () => {
+//         console.log('one worker destroy');
+//         cluster.fork()
+//     })
+// } else {
+    // app.listen(port, () => {
+    //     console.log(chalk.red.bold(`Server ${process.pid} listing on port`) + ": " + chalk.blue.underline.bold(port) + ` worker: ${cluster.worker.id}`)
+    // })
+// }
+
+app.listen(port,()=>{console.log("port is running")})
