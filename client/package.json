@@ -11,9 +11,11 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "animate.css": "^4.1.1",
     "antd": "^5.3.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-font": "^1.2.1",
     "react-useanimations": "^2.10.0"
   },
   "devDependencies": {
