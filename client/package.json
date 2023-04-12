@@ -11,12 +11,17 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.3",
     "animate.css": "^4.1.1",
     "antd": "^5.3.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-font": "^1.2.1",
-    "react-useanimations": "^2.10.0"
+    "react-redux": "^8.0.5",
+    "react-useanimations": "^2.10.0",
+    "redux-localstorage": "^0.4.1",
+    "redux-persist": "^6.0.0",
+    "redux-saga": "^1.2.3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
