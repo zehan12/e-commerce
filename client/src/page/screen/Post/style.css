@@ -1,0 +1,22 @@
+.post-container {
+    background-color: #F5FFC9;
+    padding: 3em;
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+}
+
+summary {
+    margin: 1em;
+    padding: 5em;
+    background-color:#B3E5BE;
+    transition: background-color .10s;
+}
+
+summary:hover {
+    background: rgb(147, 234, 147);
+}
+
+details[open] summary ~ * {
+    animation: sweep .5s ease-in-out;
+}
