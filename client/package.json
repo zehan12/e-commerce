@@ -5,37 +5,24 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test": "vitest",
-    "test:ui": "vitest --ui"
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^1.9.3",
-    "animate.css": "^4.1.1",
-    "antd": "^5.3.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-font": "^1.2.1",
-    "react-redux": "^8.0.5",
-    "react-useanimations": "^2.10.0",
-    "redux-localstorage": "^0.4.1",
-    "redux-persist": "^6.0.0",
-    "redux-saga": "^1.2.3"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^14.4.3",
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
-    "@vitejs/plugin-react": "^3.1.0",
-    "@vitest/ui": "^0.27.2",
-    "autoprefixer": "^10.4.14",
-    "jsdom": "^21.0.0",
-    "postcss": "^8.4.21",
-    "tailwindcss": "^3.3.0",
-    "vite": "^4.2.0",
-    "vitest": "^0.27.2"
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
   }
 }
