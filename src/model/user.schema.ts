@@ -2,6 +2,7 @@ import { NextFunction } from "express";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import crypto from "node:crypto"
 import config from "../config/config";
 
 const Schema = mongoose.Schema;
@@ -112,7 +113,15 @@ const userSchema = new Schema({
         type: Date,
         default: Date.now,
         required: true
-    }
+    },
+    refreshToken: {
+        type: String,
+    },
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
+}, {
+    timestamps: true,
 });
 
 // storing hashed password in db
@@ -146,7 +155,15 @@ userSchema.methods.signToken = async function () {
     }
 };
 
-
+userSchema.methods.createPasswordResetToken = async function () {
+    const resettoken = crypto.randomBytes(32).toString("hex");
+    this.passwordResetToken = crypto
+        .createHash("sha256")
+        .update(resettoken)
+        .digest("hex");
+    this.passwordResetExpires = Date.now() + 30 * 60 * 1000; // 10 minutes
+    return resettoken;
+};
 
 
 
