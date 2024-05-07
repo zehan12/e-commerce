@@ -2,26 +2,11 @@
   "name": "e-commerce",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node ./server/server.js",
-    "dev": "nodemon ./server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.1.0",
-    "chalk": "^4",
-    "directory-tree": "^3.5.1",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "mongoose": "^7.0.3",
-    "ramda": "^0.28.0"
-  },
-  "devDependencies": {
-    "loadtest": "^5.2.0",
-    "nodemon": "^2.0.22"
-  }
+  "license": "ISC"
 }
