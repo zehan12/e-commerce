@@ -6,14 +6,16 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/server.js",
-    "dev": "nodemon src/.ts"
+    "dev": "nodemon src/server.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "concurrently": "^8.2.2",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "mongoose": "^8.3.4"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
