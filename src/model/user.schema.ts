@@ -1,5 +1,5 @@
 import { NextFunction } from "express";
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "node:crypto"
@@ -7,7 +7,36 @@ import config from "../config/config";
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+export interface IUser extends Document {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password?: string;
+    username: string;
+    isEmailValidated: boolean;
+    contactNumber: string;
+    info: {
+        bio: string,
+        birthday: string,
+        gender: string
+    },
+    role: string,
+    isAdmin: boolean,
+    profilePicture: string,
+    status: number,
+    whishlist: [],
+    following: [],
+    followers: [],
+    history: [],
+    dateJoined: Date,
+    refreshToken: string
+    passwordChangedAt: Date,
+    passwordResetToken: string,
+    passwordResetExpires: Date,
+
+}
+
+const userSchema = new Schema<IUser>({
     firstName: { type: String, require: true, maxlength: 40 },
     lastName: { type: String, require: true, maxlength: 50 },
     email: {
@@ -144,17 +173,6 @@ userSchema.methods.verifyPassword = async function (password: string) {
     }
 };
 
-// sign jwt token
-userSchema.methods.signToken = async function () {
-    const payload = { id: this._id, email: this.email, name: this.name };
-    try {
-        const token = jwt.sign(payload, config.jwt.secret);
-        return token;
-    } catch (error) {
-        return error;
-    }
-};
-
 userSchema.methods.createPasswordResetToken = async function () {
     const resettoken = crypto.randomBytes(32).toString("hex");
     this.passwordResetToken = crypto
@@ -165,6 +183,32 @@ userSchema.methods.createPasswordResetToken = async function () {
     return resettoken;
 };
 
+userSchema.methods.generateAccessToken = function () {
+    return jwt.sign(
+        {
+            _id: this._id,
+            email: this.email,
+            username: this.username,
+            fullName: this.fullName
+        },
+        config.jwt.accessToken.secret,
+        {
+            expiresIn: config.jwt.accessToken.secret,
 
+        }
+    )
+}
+userSchema.methods.generateRefreshToken = function () {
+    return jwt.sign(
+        {
+            _id: this._id,
 
-module.exports = mongoose.model("User", userSchema);
+        },
+        config.jwt.refreshToken.secret,
+        {
+            expiresIn: config.jwt.refreshToken.expiry
+        }
+    )
+}
+
+export const User = mongoose.model<IUser>("User", userSchema);
