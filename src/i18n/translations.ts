@@ -3,6 +3,8 @@ import { TODO } from "../types/custom";
 export const translations: TODO = {
     en: {
         helloFromBackend: "Hello from backend",
+        usernameNotAvaiable:"Username is not avaiable",
+        internalServerError:"Internal Server Error",
         profileImageRequired: 'Profile image required, please upload an image!',
         fieldsRequired: 'All fields are required.',
         passwordLength:

@@ -1,5 +1,5 @@
 import { NextFunction } from "express";
-import mongoose, { Document } from "mongoose";
+import mongoose, { Model, Document } from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "node:crypto"
@@ -29,14 +29,22 @@ export interface IUser extends Document {
     followers: [],
     history: [],
     dateJoined: Date,
-    refreshToken: string
+    refreshToken: () => string,
     passwordChangedAt: Date,
     passwordResetToken: string,
     passwordResetExpires: Date,
-
+    verifyPassword(password: string): Promise<boolean>;
+    createPasswordResetToken(): () => {};
+    generateAccessToken(): () => string;
+    generateRefreshToken(): () => string;
 }
 
-const userSchema = new Schema<IUser>({
+interface UserModel extends Model<IUser> {
+    isEmailTaken: (email: string) => boolean;
+    isUsernameAvaiable: (username: string) => boolean;
+}
+
+const userSchema = new Schema<IUser, UserModel>({
     firstName: { type: String, require: true, maxlength: 40 },
     lastName: { type: String, require: true, maxlength: 50 },
     email: {
@@ -153,6 +161,21 @@ const userSchema = new Schema<IUser>({
     timestamps: true,
 });
 
+userSchema.index({ username: 1, email: 1 }, { unique: true });
+
+userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
+    const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
+    return !!user;
+};
+
+userSchema.statics.isUsernameAvaiable = async function (username, excludeUserId) {
+    const user = await this.findOne({ username, _id: { $ne: excludeUserId } });
+    return !user;
+};
+
+
+
+
 // storing hashed password in db
 // @ts-ignore
 userSchema.pre('save', async function (next: NextFunction) {
@@ -189,7 +212,7 @@ userSchema.methods.generateAccessToken = function () {
             _id: this._id,
             email: this.email,
             username: this.username,
-            fullName: this.fullName
+            fullName: `${this.firstName} ${this.lastName}`
         },
         config.jwt.accessToken.secret,
         {
@@ -211,4 +234,4 @@ userSchema.methods.generateRefreshToken = function () {
     )
 }
 
-export const User = mongoose.model<IUser>("User", userSchema);
+export const User = mongoose.model<IUser, UserModel>("User", userSchema);

@@ -9,7 +9,6 @@ export const connectDatabase = async () => {
         serverSelectionTimeoutMS: 5000,
     };
     try {
-        console.log("hello")
         await mongoose.connect(db, options);
         console.log("connected to database ✅");
     } catch (err: any) {

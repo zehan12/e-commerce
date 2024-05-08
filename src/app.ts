@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, Request, Response, urlencoded } from "express";
 import authRouter from "./routes/auth.route";
 
 import { polyglotMiddleware } from "./middlewares/polyglot.middleware";
@@ -7,6 +7,9 @@ import { status } from "./helpers/status";
 
 
 const app: Express = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.use(polyglotMiddleware);
 
