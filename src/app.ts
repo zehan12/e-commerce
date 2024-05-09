@@ -4,9 +4,12 @@ import authRouter from "./routes/auth.route";
 import { polyglotMiddleware } from "./middlewares/polyglot.middleware";
 import { response } from "./constants/response";
 import { status } from "./helpers/status";
+import cors from "cors";
 
 
 const app: Express = express();
+
+app.use(cors)
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
