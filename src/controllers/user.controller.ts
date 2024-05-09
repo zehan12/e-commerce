@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import { authService } from "../services/auth.service";
 import { ApiError } from "../utils/ApiError";
 import { TODO } from "../types/custom";
+import { userService } from "../services/user.service";
 
 /**
  * @desc      create user and register user
@@ -11,13 +11,11 @@ import { TODO } from "../types/custom";
  * @property  { Object } .......
  * @returns   { JSON } - A JSON object representing the status, message, status and data
  */
-export const createUserHandler = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<TODO> => {
+export const getUsersHandler = asyncHandler(async (req: Request, res: Response): Promise<TODO> => {
     // 1) Calling sign up service
-    let { status, message, statusCode, user } = await authService.signup(
-        req.body,
+    let { status, message, statusCode, users } = await userService.getUsers(
     );
 
-    console.log(status, message, statusCode, "here")
     message = req.polyglot.t(message)
 
     // 2) Check if something went wrong
@@ -29,6 +27,6 @@ export const createUserHandler = asyncHandler(async (req: Request, res: Response
     return res.status(statusCode).json({
         status,
         message,
-        user
+        users
     });
 });

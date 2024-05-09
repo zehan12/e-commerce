@@ -5,6 +5,7 @@ import { polyglotMiddleware } from "./middlewares/polyglot.middleware";
 import { response } from "./constants/response";
 import { status } from "./helpers/status";
 import cors from "cors";
+import userRouter from "./routes/user.route";
 
 
 const app: Express = express();
@@ -21,5 +22,6 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 
 export default app;

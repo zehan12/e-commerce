@@ -1,4 +1,3 @@
-import { Request } from "express";
 import { response } from "../constants/response";
 import { status } from "../helpers/status";
 import { StatusCodes } from 'http-status-codes';
@@ -33,7 +32,6 @@ const signup = async (createUser: CreateUser) => {
     }
 
     const isUsernameAvaiable = await User.isUsernameAvaiable(username);
-    console.log("username", isUsernameAvaiable);
 
     if (!isUsernameAvaiable) {
         return {
@@ -51,14 +49,16 @@ const signup = async (createUser: CreateUser) => {
         username: username.toLowerCase()
     })
 
-    console.log(user, "c")
-
     const createdUser = await User.findById(user._id).select(
         "-password -refreshToken"
     )
 
     if (!createdUser) {
-        throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, response.INTERNAL_SERVER_ERROR)
+        return {
+            status: status.error,
+            statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+            message: response.INTERNAL_SERVER_ERROR,
+        };
     }
 
     // If everything is OK
