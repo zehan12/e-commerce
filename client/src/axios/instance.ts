@@ -1,24 +1,22 @@
-import Axios, { AxiosRequestConfig } from "axios";
+import Axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import setAxiosHeader from "./setAxiosHeader";
 import { getRefreshToken } from "./getToken";
 import { config } from "../config/config";
-
-const axiosInstance = Axios.create({
-    baseURL: config.url.BACKEND_URL,
-});
-
-axiosInstance.interceptors.request.use(
-    async (config) => setAxiosHeader(config),
-    (error) => {
-        Promise.reject(error);
-    }
-);
 
 interface RetryQueueItem {
     resolve: (value?: any) => void;
     reject: (error?: any) => void;
     config: AxiosRequestConfig;
 }
+
+const axiosInstance: AxiosInstance = Axios.create({
+    baseURL: config.url.BACKEND_URL,
+});
+
+axiosInstance.interceptors.request.use(
+    async (config) => setAxiosHeader(config),
+    (error) => Promise.reject(error)
+);
 
 const refreshAndRetryQueue: RetryQueueItem[] = [];
 let isRefreshing = false;
@@ -55,7 +53,8 @@ axiosInstance.interceptors.response.use(
                                 console.log(errorRefresh);
                                 localStorage.clear();
                             });
-                        // Repeat all miss request by 401
+
+                        // Repeat all missed requests by 401
                         refreshAndRetryQueue.forEach(({ config, resolve, reject }) => {
                             axiosInstance(config)
                                 .then((response) => resolve(response))
