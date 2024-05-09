@@ -17,7 +17,6 @@ export const createUserHandler = asyncHandler(async (req: Request, res: Response
         req.body,
     );
 
-    console.log(status, message, statusCode, "here")
     message = req.polyglot.t(message)
 
     // 2) Check if something went wrong
