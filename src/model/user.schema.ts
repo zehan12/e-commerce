@@ -13,7 +13,7 @@ export interface IUser extends Document {
     email: string;
     password?: string;
     username: string;
-    isEmailValidated: boolean;
+    isEmailVerified: boolean;
     contactNumber: string;
     info: {
         bio: string,
@@ -84,7 +84,8 @@ const userSchema = new Schema<IUser, UserModel>({
             message: 'Username Must preceed with letters followed by _ or numbers eg: john23 | john_23'
         }
     },
-    isEmailValidated: {
+
+    isEmailVerified: {
         type: Boolean,
         default: false
     },
@@ -172,9 +173,6 @@ userSchema.statics.isUsernameAvaiable = async function (username, excludeUserId)
     const user = await this.findOne({ username, _id: { $ne: excludeUserId } });
     return !user;
 };
-
-
-
 
 // storing hashed password in db
 // @ts-ignore
