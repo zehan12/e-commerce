@@ -8,4 +8,4 @@ const userRouter: Router = Router();
 // @access    Public
 userRouter.get("/", getUsersHandler);
 
-export default userRouter;
+export { userRouter as userRoute };

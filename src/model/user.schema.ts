@@ -39,12 +39,12 @@ export interface IUser extends Document {
     generateRefreshToken(): () => string;
 }
 
-interface UserModel extends Model<IUser> {
+interface UserDoc extends Model<IUser> {
     isEmailTaken: (email: string) => boolean;
     isUsernameAvaiable: (username: string) => boolean;
 }
 
-const userSchema = new Schema<IUser, UserModel>({
+const userSchema = new Schema<IUser, UserDoc>({
     firstName: { type: String, require: true, maxlength: 40 },
     lastName: { type: String, require: true, maxlength: 50 },
     email: {
@@ -159,6 +159,16 @@ const userSchema = new Schema<IUser, UserModel>({
     passwordResetToken: String,
     passwordResetExpires: Date,
 }, {
+
+    toJSON: {
+        transform(doc, ret) {
+            delete ret.password;
+            delete ret.__v;
+            delete ret.createdAt;
+            delete ret.updatedAt;
+        }
+    },
+
     timestamps: true,
 });
 
@@ -232,4 +242,4 @@ userSchema.methods.generateRefreshToken = function () {
     )
 }
 
-export const User = mongoose.model<IUser, UserModel>("User", userSchema);
+export const User = mongoose.model<IUser, UserDoc>("User", userSchema);

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createUserHandler } from "../controllers/auth.controller";
+import { createUserHandler, verifyEmailHandler } from "../controllers/auth.controller";
 import { validateData } from "../middlewares/validateData.middleware";
 import { userRegistrationSchema } from "../zod/user.schema";
 
@@ -10,4 +10,10 @@ const authRouter: Router = Router();
 // @access    Public
 authRouter.post("/register", validateData(userRegistrationSchema), createUserHandler);
 
-export default authRouter;
+// @route     get api/auth/verify-email/:userId/:token
+// @desc      email verify with email
+// @access    Private
+authRouter.get('/email-verify/:userId/:token', verifyEmailHandler);
+
+
+export { authRouter as authRoute };
